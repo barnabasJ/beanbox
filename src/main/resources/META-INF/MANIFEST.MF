@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+
+Name: net/jovacorp/bmj/beanbox/bean/ImageDisplay.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/ImageChooser.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/ImageROI.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/ImageThreshold.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/ImageMedian.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/ImageOpening.class
+Java-Bean: true

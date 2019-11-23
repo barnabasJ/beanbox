@@ -7,11 +7,8 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-
-    // Apply the application plugin to add support for building a CLI application
-    id 'application'
+    id 'java-library'
+    id "io.freefair.lombok" version "4.1.2"
 }
 
 repositories {
@@ -21,14 +18,17 @@ repositories {
 }
 
 dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.0-jre'
-
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    compile fileTree('libs') { include '*.jar' }
 }
 
-application {
-    // Define the main class for the application
-    mainClassName = 'net.jovacorp.bmj.beanbox.App'
+jar {
+    manifest {
+        from("src/main/resources/META-INF/MANIFEST.MF")
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
+
