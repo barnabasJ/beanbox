@@ -17,67 +17,68 @@ import java.util.Vector;
 
 public class ImageChooser extends Label {
 
-    private File file;
-    private Vector<Listener> listeners;
+  private File file;
+  private Vector<Listener> listeners;
 
-    public ImageChooser() {
-        listeners = new Vector<>();
-        setFileText();
+  public ImageChooser() {
+    listeners = new Vector<>();
+    setFileText();
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                openFileChooser();
-                setFileText();
-                fireImageEvent();
-            }
+    addMouseListener(
+        new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            openFileChooser();
+            setFileText();
+            fireImageEvent();
+          }
         });
+  }
+
+  public void addImageListener(Listener<PlanarImage> listener) {
+    if (listeners == null) {
+      listeners = new Vector<>();
+    }
+    listeners.add(listener);
+
+    fireImageEvent();
+  }
+
+  public void removeImageListener(Listener<PlanarImage> listener) {
+    if (listeners != null) {
+      listeners.remove(listener);
+    }
+  }
+
+  public void fireImageEvent() {
+    PlanarImage image = null;
+    if (file != null) {
+      image = JAI.create("fileload", file.getAbsolutePath());
     }
 
-    public void addImageListener(Listener listener) {
-        if (listeners == null) {
-            listeners = new Vector<>();
-        }
-        listeners.add(listener);
-
-        fireImageEvent();
+    Event<PlanarImage> event = new Event(this, image);
+    for (Listener listener : listeners) {
+      listener.sourceChanged(event);
     }
+  }
 
-    public void removeImageListener(Listener listener) {
-        if (listeners != null) {
-            listeners.remove(listener);
-        }
+  private void openFileChooser() {
+    JFileChooser fileChooser = new JFileChooser();
+    FileFilter imageFilter =
+        new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+    fileChooser.setFileFilter(imageFilter);
+
+    int returnValue = fileChooser.showOpenDialog(this);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+      file = fileChooser.getSelectedFile();
     }
+  }
 
-    public void fireImageEvent() {
-        PlanarImage image = null;
-        if (file != null) {
-            image = JAI.create("fileload", file.getAbsolutePath());
-        }
-
-        Event event = new Event(this, image);
-        for (Listener listener : listeners) {
-            listener.sourceChanged(event);
-        }
+  private void setFileText() {
+    if (file == null) {
+      setText("Click to choose image");
+    } else {
+      setText(file.getAbsolutePath());
     }
-
-    private void openFileChooser() {
-        JFileChooser fileChooser = new JFileChooser();
-        FileFilter imageFilter = new FileNameExtensionFilter(
-                "Image files", ImageIO.getReaderFileSuffixes());
-        fileChooser.setFileFilter(imageFilter);
-
-        int returnValue = fileChooser.showOpenDialog(this);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            file = fileChooser.getSelectedFile();
-        }
-    }
-
-    private void setFileText() {
-        if (file == null) {
-            setText("Click to choose image");
-        } else {
-            setText(file.getAbsolutePath());
-        }
-    }
+  }
 }

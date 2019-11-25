@@ -1,7 +1,7 @@
 package net.jovacorp.bmj.beanbox.bean;
 
 import lombok.Getter;
-import net.jovacorp.bmj.beanbox.event.ImageEvent;
+import net.jovacorp.bmj.beanbox.event.Event;
 
 import javax.media.jai.KernelJAI;
 import javax.media.jai.PlanarImage;
@@ -9,7 +9,8 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.DilateDescriptor;
 import javax.media.jai.operator.ErodeDescriptor;
 
-public class ImageOpening extends AbstractProcessBean<PlanarImage, ImageEvent, PlanarImage> {
+public class ImageOpening
+    extends AbstractProcessBean<PlanarImage, Event<PlanarImage>, PlanarImage> {
 
   private float[] kernelMatrix;
   private int kernelDimensionX;

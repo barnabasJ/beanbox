@@ -1,12 +1,12 @@
 package net.jovacorp.bmj.beanbox.bean;
 
-import net.jovacorp.bmj.beanbox.event.ImageEvent;
+import net.jovacorp.bmj.beanbox.event.Event;
 import net.jovacorp.bmj.beanbox.listener.Listener;
 
 import javax.media.jai.PlanarImage;
 import java.awt.*;
 
-public class ImageDisplay extends Panel implements Listener<ImageEvent> {
+public class ImageDisplay extends Panel implements Listener<Event<PlanarImage>> {
   private PlanarImage image;
 
   public ImageDisplay() {
@@ -26,7 +26,7 @@ public class ImageDisplay extends Panel implements Listener<ImageEvent> {
   }
 
   @Override
-  public void sourceChanged(ImageEvent event) {
+  public void sourceChanged(Event<PlanarImage> event) {
     if (event.getEventData() != null) {
       image = event.getEventData();
     }

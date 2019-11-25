@@ -36,12 +36,12 @@ public abstract class AbstractProcessBean<I, E extends Event<I>, O> implements L
       return;
     }
 
-    fireImageEvent(processData(inputData));
+    fireEvent(processData(inputData));
   }
 
   protected abstract O processData(I inputData);
 
-  public void addImageListener(Listener listener) {
+  public void addProcessListener(Listener<Event<O>> listener) {
     if (listeners == null) {
       listeners = new Vector<>();
     }
@@ -50,20 +50,19 @@ public abstract class AbstractProcessBean<I, E extends Event<I>, O> implements L
     process();
   }
 
-  public void removeImageListener(Listener listener) {
+  public void removeProcessListener(Listener<Event<O>> listener) {
     if (listeners != null) {
       listeners.remove(listener);
     }
   }
 
-  protected void fireImageEvent(O outputData) {
+  protected void fireEvent(O outputData) {
     if (outputData == null) {
       return;
     }
-
+    Event<O> event = new Event<>(this, outputData);
     for (Listener listener : listeners) {
-      O eventData = gson.fromJson(gson.toJson(outputData), outputClazz);
-      listener.sourceChanged(new Event<O>(this, eventData));
+      listener.sourceChanged(event);
     }
   }
 }

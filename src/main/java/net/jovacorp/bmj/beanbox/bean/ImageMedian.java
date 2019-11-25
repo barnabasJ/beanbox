@@ -1,7 +1,7 @@
 package net.jovacorp.bmj.beanbox.bean;
 
 import lombok.Getter;
-import net.jovacorp.bmj.beanbox.event.ImageEvent;
+import net.jovacorp.bmj.beanbox.event.Event;
 
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
@@ -9,7 +9,7 @@ import javax.media.jai.operator.MedianFilterDescriptor;
 import javax.media.jai.operator.MedianFilterShape;
 import java.awt.image.renderable.ParameterBlock;
 
-public class ImageMedian extends AbstractProcessBean<PlanarImage, ImageEvent, PlanarImage> {
+public class ImageMedian extends AbstractProcessBean<PlanarImage, Event<PlanarImage>, PlanarImage> {
 
   private MedianFilterShape medianFilterShape;
   @Getter private int maskSize;

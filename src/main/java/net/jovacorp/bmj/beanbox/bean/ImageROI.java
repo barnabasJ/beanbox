@@ -1,11 +1,11 @@
 package net.jovacorp.bmj.beanbox.bean;
 
-import net.jovacorp.bmj.beanbox.event.ImageEvent;
+import net.jovacorp.bmj.beanbox.event.Event;
 
 import javax.media.jai.PlanarImage;
 import java.awt.*;
 
-public class ImageROI extends AbstractProcessBean<PlanarImage, ImageEvent, PlanarImage> {
+public class ImageROI extends AbstractProcessBean<PlanarImage, Event<PlanarImage>, PlanarImage> {
 
   private int offsetX;
   private int offsetY;
