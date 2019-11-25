@@ -1,55 +1,58 @@
 package net.jovacorp.bmj.beanbox.bean;
 
+import lombok.Getter;
+import net.jovacorp.bmj.beanbox.event.ImageEvent;
+
 import javax.media.jai.KernelJAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.DilateDescriptor;
 import javax.media.jai.operator.ErodeDescriptor;
 
-public class ImageOpening extends AbstractImageProcessBean {
+public class ImageOpening extends AbstractProcessBean<PlanarImage, ImageEvent, PlanarImage> {
 
-    private float[] kernelMatrix;
-    private int kernelDimensionX;
-    private int kernelDimensionY;
-    private int executionAmount;
+  private float[] kernelMatrix;
+  private int kernelDimensionX;
+  private int kernelDimensionY;
+  @Getter private int executionAmount;
 
-    public ImageOpening() {
-        super();
+  public ImageOpening() {
+    super();
 
-        kernelMatrix = new float[]{
-                0, 1, 0,
-                1, 1, 1,
-                0, 1, 0
+    kernelMatrix =
+        new float[] {
+          0, 1, 0,
+          1, 1, 1,
+          0, 1, 0
         };
 
-        kernelDimensionX = 3;
-        kernelDimensionY = 3;
-        executionAmount = 4;
+    kernelDimensionX = 3;
+    kernelDimensionY = 3;
+    executionAmount = 4;
+  }
+
+  public void setExecutionAmount(int executionAmount) {
+    this.executionAmount = executionAmount;
+    process();
+  }
+
+  @Override
+  protected PlanarImage processData(PlanarImage inputData) {
+    KernelJAI kernel = new KernelJAI(kernelDimensionX, kernelDimensionY, kernelMatrix);
+
+    // erode
+    RenderedOp outputData = ErodeDescriptor.create(inputData, kernel, null);
+    for (int i = 0; i < executionAmount - 1; i++) {
+      outputData = ErodeDescriptor.create(outputData, kernel, null);
     }
 
-    public int getExecutionAmount() {
-        return executionAmount;
+    // dilate
+    for (int i = 0; i < executionAmount; i++) {
+      outputData = DilateDescriptor.create(outputData, kernel, null);
     }
 
-    public void setExecutionAmount(int executionAmount) {
-        this.executionAmount = executionAmount;
-        process();
-    }
-
-    @Override
-    protected void processImage() {
-        KernelJAI kernel = new KernelJAI(kernelDimensionX, kernelDimensionY, kernelMatrix);
-
-        // erode
-        editedImage = ErodeDescriptor.create(originalImage, kernel, null);
-        for (int i = 0; i < executionAmount - 1; i++) {
-            editedImage = ErodeDescriptor.create(editedImage, kernel, null);
-        }
-
-        //dilate
-        for (int i = 0; i < executionAmount; i++) {
-            editedImage = DilateDescriptor.create(editedImage, kernel, null);
-        }
-
-        editedImage.setProperty("offsetX", originalImage.getProperty("offsetX"));
-        editedImage.setProperty("offsetY", originalImage.getProperty("offsetY"));
-    }
+    outputData.setProperty("offsetX", inputData.getProperty("offsetX"));
+    outputData.setProperty("offsetY", inputData.getProperty("offsetY"));
+    return outputData;
+  }
 }

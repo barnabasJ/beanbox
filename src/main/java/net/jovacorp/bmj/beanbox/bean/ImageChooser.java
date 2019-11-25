@@ -1,7 +1,7 @@
 package net.jovacorp.bmj.beanbox.bean;
 
-import net.jovacorp.bmj.beanbox.event.ImageEvent;
-import net.jovacorp.bmj.beanbox.listener.ImageListener;
+import net.jovacorp.bmj.beanbox.event.Event;
+import net.jovacorp.bmj.beanbox.listener.Listener;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
@@ -18,7 +18,7 @@ import java.util.Vector;
 public class ImageChooser extends Label {
 
     private File file;
-    private Vector<ImageListener> listeners;
+    private Vector<Listener> listeners;
 
     public ImageChooser() {
         listeners = new Vector<>();
@@ -34,7 +34,7 @@ public class ImageChooser extends Label {
         });
     }
 
-    public void addImageListener(ImageListener listener) {
+    public void addImageListener(Listener listener) {
         if (listeners == null) {
             listeners = new Vector<>();
         }
@@ -43,7 +43,7 @@ public class ImageChooser extends Label {
         fireImageEvent();
     }
 
-    public void removeImageListener(ImageListener listener) {
+    public void removeImageListener(Listener listener) {
         if (listeners != null) {
             listeners.remove(listener);
         }
@@ -55,8 +55,8 @@ public class ImageChooser extends Label {
             image = JAI.create("fileload", file.getAbsolutePath());
         }
 
-        ImageEvent event = new ImageEvent(this, image);
-        for (ImageListener listener : listeners) {
+        Event event = new Event(this, image);
+        for (Listener listener : listeners) {
             listener.sourceChanged(event);
         }
     }
