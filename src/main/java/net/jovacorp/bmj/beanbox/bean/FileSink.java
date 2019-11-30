@@ -11,14 +11,23 @@ import java.util.List;
 
 public class FileSink extends Label implements Listener<List<Coordinate>> {
   @Getter private String pathToFile;
+  private List<Coordinate> deviations;
 
   public FileSink() {
-      super();
-      setText("FileSink");
+    super();
+    setText("FileSink");
+  }
+
+  public void setPathToFile(String pathToFile) {
+    this.pathToFile = pathToFile;
+    if (deviations != null) {
+      sourceChanged(deviations);
+    }
   }
 
   @Override
   public void sourceChanged(List<Coordinate> deviations) {
+    this.deviations = deviations;
     try (PrintWriter pw = new PrintWriter(pathToFile)) {
       for (Coordinate deviation : deviations) {
         pw.println(deviation);
