@@ -7,23 +7,23 @@ import java.io.IOException;
 
 public class ImagePanel extends Panel {
 
-    File file;
+  File file;
 
-    public void displayImage(File file) {
-        this.file = file;
+  public void displayImage(File file) {
+    this.file = file;
 
-        repaint();
+    repaint();
+  }
+
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+
+    try {
+      Image image = ImageIO.read(file);
+      g.drawImage(image, 0, 0, null);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        try {
-            Image image = ImageIO.read(file);
-            g.drawImage(image, 0, 0, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }

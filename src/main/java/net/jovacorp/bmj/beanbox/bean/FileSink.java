@@ -6,49 +6,30 @@ import net.jovacorp.bmj.beanbox.Coordinates;
 import net.jovacorp.bmj.beanbox.event.Event;
 import net.jovacorp.bmj.beanbox.listener.Listener;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class FileSink extends Label implements Listener<Event<Coordinates>> {
-  @Getter private File resultFile;
+public class FileSink implements Listener<Event<Coordinates>> {
+  @Getter private String resultFilePath;
   private List<Coordinate> deviations;
 
   public FileSink() {
-    addMouseListener(
-        new MouseAdapter() {
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            openFileChooser();
-            setFileText();
-          }
-        });
+    super();
+    this.resultFilePath = "";
   }
 
-  private void openFileChooser() {
-    JFileChooser fileChooser = new JFileChooser();
-
-    int returnValue = fileChooser.showOpenDialog(this);
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      resultFile = fileChooser.getSelectedFile();
-    }
-  }
-
-  private void setFileText() {
-    if (resultFile == null) {
-      setText("Click to choose image");
-    } else {
-      setText(resultFile.getAbsolutePath());
+  public void setResultFilePath(String resultFilePath) {
+    this.resultFilePath = resultFilePath;
+    if (deviations != null) {
+      process(deviations);
     }
   }
 
   public void process(List<Coordinate> deviations) {
+    File resultFile = new File(resultFilePath);
     if (!resultFile.exists()) {
       try {
         resultFile.createNewFile();

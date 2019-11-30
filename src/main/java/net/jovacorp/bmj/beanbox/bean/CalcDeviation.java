@@ -5,7 +5,6 @@ import net.jovacorp.bmj.beanbox.Coordinate;
 import net.jovacorp.bmj.beanbox.Coordinates;
 import net.jovacorp.bmj.beanbox.event.Event;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,15 +14,11 @@ import java.util.stream.Collectors;
 
 public class CalcDeviation
     extends AbstractProcessBean<Coordinates, Event<Coordinates>, Coordinates> {
-  @Getter public File controlFile;
+  @Getter public String controlFilePath = "";
   public Pattern coordinatePattern = Pattern.compile("\\((\\d+)\\,(\\d+)\\)");
 
-  public CalcDeviation() throws IOException {
-    controlFile = File.createTempFile("prefix-", "-suffix");
-  }
-
-  public void setControlFile(File controlFile) {
-    this.controlFile = controlFile;
+  public void setControlFilePath(String controlFilePath) {
+    this.controlFilePath = controlFilePath;
   }
 
   private Coordinate calculateDeviation(
@@ -51,7 +46,7 @@ public class CalcDeviation
 
   @Override
   protected Coordinates processData(Coordinates inputData) {
-    try (FileReader fr = new FileReader(controlFile); ) {
+    try (FileReader fr = new FileReader(controlFilePath)) {
       String fileContent = readFile(fr);
       Matcher matcher = coordinatePattern.matcher(fileContent);
 
