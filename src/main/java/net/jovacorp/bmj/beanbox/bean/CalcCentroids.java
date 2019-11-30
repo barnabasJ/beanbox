@@ -1,19 +1,27 @@
 package net.jovacorp.bmj.beanbox.bean;
 
 import net.jovacorp.bmj.beanbox.Coordinate;
+import net.jovacorp.bmj.beanbox.Coordinates;
 import net.jovacorp.bmj.beanbox.event.Event;
 
 import javax.media.jai.PlanarImage;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class CalcCentroids
-    extends AbstractProcessBean<PlanarImage, Event<PlanarImage>, List<Coordinate>> {
+    extends AbstractProcessBean<PlanarImage, Event<PlanarImage>, Coordinates> {
   private HashMap<Coordinate, Boolean> general;
   private LinkedList<ArrayList<Coordinate>> figures;
 
+  public CalcCentroids() {
+    super();
+  }
+
   @Override
-  protected List<Coordinate> processData(PlanarImage inputData) {
+  protected Coordinates processData(PlanarImage inputData) {
     general = new HashMap<>();
     figures = new LinkedList<>();
 
@@ -31,7 +39,7 @@ public class CalcCentroids
       }
     }
 
-    return calculateCentroids(inputData);
+    return new Coordinates(calculateCentroids(inputData));
   }
 
   private void getNextFigure(BufferedImage img, int x, int y) {

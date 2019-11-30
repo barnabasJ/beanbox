@@ -16,3 +16,5 @@ Name: net/jovacorp/bmj/beanbox/bean/FileSink.class
 Java-Bean: true
 Name: net/jovacorp/bmj/beanbox/bean/CalcCentroids.class
 Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/CalcDeviation.class
+Java-Bean: true
