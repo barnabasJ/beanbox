@@ -15,7 +15,7 @@ public class ImageChooserBeanInfo extends SimpleBeanInfo {
             ImageChooser.class,
             "image",
             Listener.class,
-            new String[] {"sourceChanged"},
+            new String[] {"imageChanged"},
             "addImageListener",
             "removeImageListener")
       };

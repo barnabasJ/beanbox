@@ -15,7 +15,7 @@ public class AbstractProcessBeanBeanInfo extends SimpleBeanInfo {
             AbstractProcessBean.class,
             "processed",
             Listener.class,
-            new String[] {"sourceChanged"},
+            new String[] {"dataProcessed"},
             "addProcessListener",
             "removeProcessListener")
       };

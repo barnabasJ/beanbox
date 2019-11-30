@@ -12,3 +12,7 @@ Name: net/jovacorp/bmj/beanbox/bean/ImageMedian.class
 Java-Bean: true
 Name: net/jovacorp/bmj/beanbox/bean/ImageOpening.class
 Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/FileSink.class
+Java-Bean: true
+Name: net/jovacorp/bmj/beanbox/bean/CalcCentroids.class
+Java-Bean: true
